@@ -9,11 +9,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let tasks = JSON.parse(fileContents);
     const taskIndex = tasks.findIndex((t: any) => t.id === taskId);
 
+    if (taskIndex === -1) {
+        return res.status(404).json({ error: 'Nenalezeno' });
+    }
+
     if (req.method === 'GET') {
         res.status(200).json(tasks[taskIndex]);
     } else if (req.method === 'DELETE') {
         tasks = tasks.filter((t: any) => t.id !== taskId);
         await fs.writeFile(dataPath, JSON.stringify(tasks, null, 2));
         res.status(200).json({ message: 'Smazano' });
+    } else if (req.method === 'PUT') {
+        tasks[taskIndex] = { ...tasks[taskIndex], ...req.body };
+        await fs.writeFile(dataPath, JSON.stringify(tasks, null, 2));
+        res.status(200).json(tasks[taskIndex]);
     }
 }
