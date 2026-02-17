@@ -25,6 +25,11 @@ export default function Home() {
         fetchTasks();
     };
 
+    const deleteTask = async (id: number) => {
+        await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+        fetchTasks();
+    };
+
     return (
         <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
             <h1>Todolist</h1>
@@ -39,6 +44,7 @@ export default function Home() {
                 {tasks.map(task => (
                     <li key={task.id}>
                         {task.title}
+                        <button onClick={() => deleteTask(task.id)} style={{ marginLeft: '10px' }}>Smazat</button>
                     </li>
                 ))}
             </ul>
