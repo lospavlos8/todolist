@@ -30,6 +30,15 @@ export default function Home() {
         fetchTasks();
     };
 
+    const toggleTask = async (task: any) => {
+        await fetch(`/api/tasks/${task.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ completed: !task.completed }),
+        });
+        fetchTasks();
+    };
+
     return (
         <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
             <h1>Todolist</h1>
@@ -43,6 +52,11 @@ export default function Home() {
             <ul>
                 {tasks.map(task => (
                     <li key={task.id}>
+                        <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={() => toggleTask(task)}
+                        />
                         {task.title}
                         <button onClick={() => deleteTask(task.id)} style={{ marginLeft: '10px' }}>Smazat</button>
                     </li>
