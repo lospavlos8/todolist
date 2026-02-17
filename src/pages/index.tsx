@@ -39,6 +39,18 @@ export default function Home() {
         fetchTasks();
     };
 
+    const editTask = async (task: any) => {
+        const newTitle = prompt("Zadej novy nazev:", task.title);
+        if (newTitle && newTitle !== task.title) {
+            await fetch(`/api/tasks/${task.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: newTitle }),
+            });
+            fetchTasks();
+        }
+    };
+
     return (
         <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
             <h1>Todolist</h1>
@@ -58,6 +70,7 @@ export default function Home() {
                             onChange={() => toggleTask(task)}
                         />
                         {task.title}
+                        <button onClick={() => editTask(task)} style={{ marginLeft: '10px' }}>Upravit</button>
                         <button onClick={() => deleteTask(task.id)} style={{ marginLeft: '10px' }}>Smazat</button>
                     </li>
                 ))}
