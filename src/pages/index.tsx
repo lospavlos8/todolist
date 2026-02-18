@@ -66,7 +66,7 @@ export default function Home() {
                 <button onClick={() => fetchTasks('/api/tasks?finished=false')}>Nehotove</button>
             </div>
             <div>
-                <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                <input value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="Zadej ukol..." />
                 <button onClick={addTask}>Pridat</button>
             </div>
             <ul>
