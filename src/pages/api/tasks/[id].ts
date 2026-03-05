@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { updateTaskSchema } from '../../../../utils/validation';
+import { updateTaskSchema } from '../../../utils/validation';
 
 const prisma = new PrismaClient();
 

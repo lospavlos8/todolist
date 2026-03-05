@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { taskSchema } from '../../../../utils/validation';
+import { taskSchema } from '../../../utils/validation';
 
 
 const prisma = new PrismaClient();
@@ -8,7 +8,16 @@ const prisma = new PrismaClient();
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
         try {
-            const tasks = await prisma.task.findMany();
+            const { finished } = req.query;
+
+
+            const whereClause = finished === 'true' ? { completed: true }
+                : finished === 'false' ? { completed: false }
+                    : {};
+
+            const tasks = await prisma.task.findMany({
+                where: whereClause
+            });
             return res.status(200).json(tasks);
         } catch (error) {
             return res.status(500).json({ error: "Chyba databáze při načítání úkolů" });
